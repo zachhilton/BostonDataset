@@ -4,8 +4,7 @@ from __future__ import print_function
 import os
 import neat
 import visualize
-from random import randrange
-
+import math
 
 from sklearn.datasets import load_boston
 boston = load_boston()
@@ -13,7 +12,6 @@ boston = load_boston()
 x = 0
 boston_inputs = []
 while x < 506:
-    print(boston.data[x])
     dumbledore = boston.data[x]
     boston_inputs.append(tuple(dumbledore))
     x+=1
@@ -23,7 +21,6 @@ print(boston.target[1])
 x = 0
 boston_outputs = []
 while x < 506:
-    print(boston.target[x])
     dumbledore = boston.target[x]
     bob = (dumbledore,)
     boston_outputs.append(bob)
@@ -33,11 +30,11 @@ while x < 506:
 
 def eval_genomes(genomes, config):
     for genome_id, genome in genomes:
-        genome.fitness = 4.0
+        genome.fitness = 100
         net = neat.nn.FeedForwardNetwork.create(genome, config)
         for xi, xo in zip(boston_inputs, boston_outputs):
             output = net.activate(xi)
-            genome.fitness -= (output[0] - xo[0]) ** 2
+            genome.fitness -= math.sqrt(((output[0] - xo[0]) ** 2))/(506)
 
 
 def run(config_file):
