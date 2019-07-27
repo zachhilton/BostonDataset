@@ -9,14 +9,39 @@ import math
 from sklearn.datasets import load_boston
 boston = load_boston()
 
+input_dummy = boston.data
+
+# FEATURE SCALING FOR INPUTS
+highests = []
+varCounter = 0
+while varCounter < 13:
+    i = 0
+    highest = 0
+    while i < 506:
+        if input_dummy[i][varCounter] > highest:
+            highest = input_dummy[i][varCounter]
+        i = i + 1
+    highests.append(highest)
+    varCounter = varCounter + 1
+
+i = 0
+while i < 506:
+    varCounter = 0
+    while varCounter < 13:
+        i = 0
+        while i < 506:
+            input_dummy[i][varCounter] = input_dummy[i][varCounter]/highests[varCounter]
+            i = i + 1
+        varCounter = varCounter + 1
+
+
 x = 0
 boston_inputs = []
 while x < 506:
-    dumbledore = boston.data[x]
+    dumbledore = input_dummy[x]
     boston_inputs.append(tuple(dumbledore))
     x+=1
 
-print(boston.target[1])
 
 x = 0
 boston_outputs = []
@@ -30,11 +55,11 @@ while x < 506:
 
 def eval_genomes(genomes, config):
     for genome_id, genome in genomes:
-        genome.fitness = 100
+        genome.fitness = 0
         net = neat.nn.FeedForwardNetwork.create(genome, config)
         for xi, xo in zip(boston_inputs, boston_outputs):
             output = net.activate(xi)
-            genome.fitness -= math.sqrt(((output[0] - xo[0]) ** 2))/(506)
+            genome.fitness -= ((output[0] - xo[0]) ** 2)/(506)
 
 
 def run(config_file):
@@ -52,7 +77,7 @@ def run(config_file):
     p.add_reporter(stats)
     p.add_reporter(neat.Checkpointer(5))
 
-    # Run for up to 300 generations.
+    # Run for up to 100 generations.
     winner = p.run(eval_genomes, 100)
 
     # Display the winning genome.

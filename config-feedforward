@@ -1,21 +1,21 @@
-#--- parameters for the XOR-2 experiment ---#
+#--- parameters for the Boston Dataset experiment ---#
 
 [NEAT]
 fitness_criterion     = max
-fitness_threshold     = 99.5
+fitness_threshold     = -1
 pop_size              = 150
 reset_on_extinction   = False
 
 [DefaultGenome]
 # node activation options
 activation_default      = identity
-activation_mutate_rate  = 0.0
-activation_options      = identity
+activation_mutate_rate  = 0.2
+activation_options      = identity sigmoid inv square gauss exp
 
 # node aggregation options
 aggregation_default     = sum
 aggregation_mutate_rate = 0.0
-aggregation_options     = product,sum
+aggregation_options     = sum
 
 # node bias options
 bias_init_mean          = 0.0
@@ -42,8 +42,8 @@ feed_forward            = True
 initial_connection      = full
 
 # node add/remove rates
-node_add_prob           = 0.2
-node_delete_prob        = 0.2
+node_add_prob           = 0.4
+node_delete_prob        = 0.4
 
 # network parameters
 num_hidden              = 0
