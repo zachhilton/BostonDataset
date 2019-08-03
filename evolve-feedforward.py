@@ -9,12 +9,21 @@ import math
 from sklearn.datasets import load_boston
 boston = load_boston()
 
-input_dummy = boston.data
+input_dummy_dumb = boston.data
+input_dummy = []
+
+#LIMITING IT TO ONLY THE IMPORTANT VARIABLES SO MAYBE I HAVE A CHANCE
+i = 0
+while i < 506:
+    input_dummy.append([input_dummy_dumb[i][5], input_dummy_dumb[i][10], input_dummy_dumb[i][12]])
+    i = i + 1
+
+
 
 # FEATURE SCALING FOR INPUTS
 highests = []
 varCounter = 0
-while varCounter < 13:
+while varCounter < 3:
     i = 0
     highest = 0
     while i < 506:
@@ -27,7 +36,7 @@ while varCounter < 13:
 i = 0
 while i < 506:
     varCounter = 0
-    while varCounter < 13:
+    while varCounter < 3:
         i = 0
         while i < 506:
             input_dummy[i][varCounter] = input_dummy[i][varCounter]/highests[varCounter]
